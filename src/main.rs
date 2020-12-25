@@ -9,8 +9,11 @@ fn main() {
 fn do_stuff_with(mut decks: Vec<VecDeque<u32>>) -> Vec<VecDeque<u32>> {
     for _ in 0..7 {
         let new_decks: Vec<VecDeque<u32>> = decks
-            .iter()
-            .map(|d| d.iter().skip(1).cloned().collect())
+            .iter_mut()
+            .map(|d| {
+                let slice = d.make_contiguous();
+                slice[1..].to_vec().into()
+            })
             .collect();
         if !new_decks[0].is_empty() {
             let new_decks = do_stuff_with(new_decks);
